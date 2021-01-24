@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Mijnmedicijn</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="email">E-mail</string>
+    <string name="password">Wachtwoord</string>
+    <string name="already_have_an_account">Heb je al een account?</string>
+    <string name="sign_up">Aanmelden</string>
+    <string name="sign_in">Inloggen</string>
+    <string name="don_t_have_an_account">Geen account?</string>
+    <string name="confirm_password">Wachtwoord bevestigen</string>
+
 </resources>
