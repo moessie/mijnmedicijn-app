@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/logo_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Authentication.SignInFragment">
 
@@ -14,9 +13,9 @@
 
         <!--To use this you need to change styles.xml to Material i.e Theme.MaterialComponents.Light.NoActionBar!-->
         <ImageView
+            android:layout_marginTop="70dp"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_margin="30dp"
             android:src="@drawable/app_logo" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -34,7 +33,7 @@
                 android:id="@+id/LoginEmailET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans_bold"
+                android:fontFamily="@font/open_sans_semibold"
                 android:inputType="textEmailAddress"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
