@@ -19,5 +19,13 @@
     <string name="settings">Instellingen</string>
     <string name="no_reminders_msg">Je hebt nog geen medicijn herineringen toegevoegd</string>
     <string name="you_don_t_have_any_saved_medications_yet">Je hebt nog geen opgeslagen medicatie</string>
-
+    <string name="medicine_name">Medicijn naam</string>
+    <string name="unit">Unit</string>
+    <string name="frequency_of_intake">Frequentie van inname</string>
+    <string name="repeat_after_every">Herhalen elke</string>
+    <string name="quantity">Hoeveelheid</string>
+    <string name="save_reminder">Opslaan Herinnering</string>
+    <string name="add_reminder_time">Voeg herinnering tijd toe</string>
+    <string name="choose_reminder_time">Kies een tijd</string>
+    <string name="done">Klaar</string>
 </resources>
