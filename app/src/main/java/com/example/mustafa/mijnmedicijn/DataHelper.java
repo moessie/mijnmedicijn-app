@@ -36,9 +36,9 @@ public class DataHelper {
 
     public static List<String> getIntakeFrequency(){
         List<String>units = new ArrayList<>();
-        units.add("Everyday");
-        units.add("Every X days");
-        units.add("Specific days of Week");
+        units.add("Elkedag");
+        units.add("Elke X dagen");
+        units.add("Specifieke dag ");
         return units;
     }
 
