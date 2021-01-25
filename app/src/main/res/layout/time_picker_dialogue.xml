@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tag"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/open_sans_semibold"
+        android:textSize="15sp"
+        android:text="@string/choose_reminder_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TimePicker
+        android:id="@+id/alarmTimePicker"
+        android:layout_below="@+id/tag"
+        android:layout_marginTop="15dp"
+        android:timePickerMode="spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/doneBtn"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/alarmTimePicker"
+        android:fontFamily="@font/open_sans_bold"
+        android:text="@string/done"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_width="100dp"
+        android:layout_height="50dp"/>
+</RelativeLayout>

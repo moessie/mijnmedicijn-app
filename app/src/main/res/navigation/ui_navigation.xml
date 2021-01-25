@@ -9,7 +9,11 @@
         android:id="@+id/navigation_reminders"
         android:name="com.example.mustafa.mijnmedicijn.ui.reminders.RemindersFragment"
         android:label="@string/reminders"
-        tools:layout="@layout/fragment_reminders" />
+        tools:layout="@layout/fragment_reminders" >
+        <action
+            android:id="@+id/action_navigation_reminders_to_addReminderFragment"
+            app:destination="@id/addReminderFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_medication"
@@ -22,4 +26,9 @@
         android:name="com.example.mustafa.mijnmedicijn.ui.settings.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/addReminderFragment"
+        android:name="com.example.mustafa.mijnmedicijn.ui.reminders.AddReminderFragment"
+        android:label="Medication Details"
+        tools:layout="@layout/fragment_add_reminder" />
 </navigation>
