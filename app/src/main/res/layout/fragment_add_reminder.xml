@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addReminderFrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.reminders.AddReminderFragment">
@@ -69,8 +70,44 @@
 
             <Spinner
                 android:id="@+id/unitSpinner"
+                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/addReminderLayout"
+            android:paddingEnd  ="15dp"
+            android:paddingStart="15dp"
+            android:background="@drawable/outline_hollow"
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp">
+            <ImageView
+                android:id="@+id/addAlarmImg"
+                android:layout_centerVertical="true"
+                android:src="@drawable/alarm_icon"
+                android:layout_width ="25dp"
+                android:layout_height="25dp"
+                app:tint="@color/colorPrimary" />
+            <TextView
+                android:layout_toEndOf="@+id/addAlarmImg"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_semibold"
+                android:text="@string/add_reminder_time"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/ReminderTimeTV"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/open_sans_bold"
+                android:textSize="18sp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
         <TextView
@@ -90,19 +127,20 @@
 
             <Spinner
                 android:id="@+id/intakeSpinner"
+                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/repeatAfterXDays"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:layout_marginTop="15dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -128,18 +166,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/open_sans_semibold"
-                android:text="days"
+                android:text="@string/days"
                 android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/daysOfWeek"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:layout_marginTop="15dp"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -148,6 +186,8 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/mondayCB"
+                    android:buttonTint="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -155,7 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:text="Monday"
+                    android:text="@string/monday"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -166,6 +206,8 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/tuesdayCB"
+                    android:buttonTint="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -173,7 +215,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:text="Tuesday"
+                    android:text="@string/tuesday"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -184,6 +226,8 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/wednesdayCB"
+                    android:buttonTint="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -191,7 +235,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:text="Wednesday"
+                    android:text="@string/wednesday"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -202,6 +246,8 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/thursdayCB"
+                    android:buttonTint="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -209,7 +255,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:text="Thursday"
+                    android:text="@string/thursday"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -220,6 +266,8 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/fridayCB"
+                    android:buttonTint="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -227,7 +275,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:text="Friday"
+                    android:text="@string/friday"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -238,6 +286,8 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/saturdayCB"
+                    android:buttonTint="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -245,7 +295,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:text="Saturday"
+                    android:text="@string/saturday"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -256,6 +306,8 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/sundayCB"
+                    android:buttonTint="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -263,44 +315,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_semibold"
-                    android:text="Sunday"
+                    android:text="@string/sunday"
                     android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/addReminderLayout"
-            android:paddingEnd  ="15dp"
-            android:paddingStart="15dp"
-            android:background="@drawable/outline_hollow"
-            android:layout_marginTop="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="55dp">
-            <ImageView
-                android:id="@+id/addAlarmImg"
-                android:layout_centerVertical="true"
-                android:src="@drawable/alarm_icon"
-                android:layout_width ="20dp"
-                android:layout_height="20dp"/>
-            <TextView
-                android:layout_toEndOf="@+id/addAlarmImg"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans_semibold"
-                android:text="@string/add_reminder_time"
-                android:textSize="15sp" />
-            <TextView
-                android:id="@+id/ReminderTimeTV"
-                android:textColor="@color/colorAccent"
-                android:fontFamily="@font/open_sans_bold"
-                android:textSize="18sp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/saveReminderFAB"
