@@ -1,4 +1,4 @@
-package com.example.mustafa.mijnmedicijn.Reminder;
+package com.example.mustafa.mijnmedicijn.Broadcasts;
 
 import android.app.Notification;
 import android.content.BroadcastReceiver;
@@ -9,7 +9,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.ald.devs47.mijnmedicijn.R;
+import com.example.mustafa.mijnmedicijn.R;
 
 import static com.example.mustafa.mijnmedicijn.App.CHANNEL_1_ID;
 
@@ -21,7 +21,7 @@ public class ReminderBroadcast extends BroadcastReceiver {
         NotificationManagerCompat notificationManager= NotificationManagerCompat.from(context);
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.email_small)
-                .setContentTitle("Herrinering")
+                .setContentTitle("Herinnering")
                 .setContentText("Neem je medicatie") // TODO: Get this from DB
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)

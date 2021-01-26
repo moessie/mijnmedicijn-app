@@ -24,7 +24,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <receiver android:name=".Reminder.ReminderBroadcast"/>
+        <receiver android:name=".Broadcasts.ReminderBroadcast"/>
     </application>
 
 </manifest>
