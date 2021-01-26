@@ -12,11 +12,13 @@
         android:theme="@style/Theme.Mijnmedicijn">
 
         <activity android:name=".MedicineTakenActivity"
+            android:label="Track Medication"
             android:parentActivityName=".HomeActivity"/>
 
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" />
+
         <activity android:name=".Authentication.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

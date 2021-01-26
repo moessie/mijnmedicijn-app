@@ -34,4 +34,7 @@
     <string name="delete">Verwijder</string>
     <string name="time_for_your_medicine">Mijnmedicijn - Tijd voor je medicatie</string>
     <string name="taken">Genomen</string>
+    <string name="dosage">Dosering</string>
+    <string name="medicine_taken">Medicijn Genomen</string>
+    <string name="record_dose">Dosering Opslaan</string>
 </resources>

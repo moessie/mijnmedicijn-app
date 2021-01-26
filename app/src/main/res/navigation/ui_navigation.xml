@@ -26,7 +26,13 @@
         android:id="@+id/navigation_medication"
         android:name="com.example.mustafa.mijnmedicijn.ui.medication.MyMedicationFragment"
         android:label="@string/my_medication"
-        tools:layout="@layout/fragment_my_medication" />
+        tools:layout="@layout/fragment_my_medication" >
+        <action
+            android:id="@+id/action_medication_to_intakeHistoryFragment"
+            app:destination="@id/intakeHistoryFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
@@ -43,4 +49,9 @@
         android:name="com.example.mustafa.mijnmedicijn.ui.reminders.EditReminderFragment"
         android:label="@string/reminder_details"
         tools:layout="@layout/fragment_edit_reminder" />
+    <fragment
+        android:id="@+id/intakeHistoryFragment"
+        android:name="com.example.mustafa.mijnmedicijn.ui.medication.IntakeHistoryFragment"
+        android:label="Medication Record"
+        tools:layout="@layout/fragment_intake_history" />
 </navigation>

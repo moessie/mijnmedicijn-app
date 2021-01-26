@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mustafa.mijnmedicijn.Broadcasts.ReminderBroadcast;
 import com.example.mustafa.mijnmedicijn.DataHelper;
 import com.example.mustafa.mijnmedicijn.R;
-import com.example.mustafa.mijnmedicijn.Recycler.SuggestionsAdapter;
+import com.example.mustafa.mijnmedicijn.Recycler.adapters.SuggestionsAdapter;
 import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;

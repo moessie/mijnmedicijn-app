@@ -54,7 +54,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:background="@drawable/notif_btn_bk"
+        android:background="@drawable/glowing_accent_btn"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:text="Taken"

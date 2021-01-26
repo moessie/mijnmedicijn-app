@@ -20,7 +20,10 @@ public interface MedicationTrackerDao {
     @Query("SELECT * FROM medicationTrackerData")
     List<MedicationTrackerModel> getMyMedicationHistory();
 
-    @Query("SELECT * FROM medicationTrackerData WHERE mId IN (:medicationID)")
-    MedicationTrackerModel loadSingle(int medicationID);
+    @Query("SELECT * FROM medicationTrackerData WHERE medicationInfo IN (:medicineName)")
+    List<MedicationTrackerModel> loadSelected(String medicineName);
+
+    @Query("SELECT * FROM medicationTrackerData WHERE medicationInfo IN (:medicineName) AND dateStr IN (:intakeDate)")
+    List<MedicationTrackerModel> loadSelectedDate(String medicineName,String intakeDate);
 
 }

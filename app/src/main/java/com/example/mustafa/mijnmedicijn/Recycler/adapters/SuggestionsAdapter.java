@@ -1,4 +1,4 @@
-package com.example.mustafa.mijnmedicijn.Recycler;
+package com.example.mustafa.mijnmedicijn.Recycler.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;

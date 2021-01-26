@@ -9,35 +9,57 @@ import androidx.room.PrimaryKey;
 public class MedicationTrackerModel {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "mId")
-    private final int medicationID;
+    @NonNull
+    @ColumnInfo(name = "medicationID")
+    Integer medicationID;
 
     @NonNull
-    @ColumnInfo(name = "intakeDate")
-    private final String intakeDate;
+    @ColumnInfo(name = "timeStamp")
+    private Long timeStamp;
+
+    @NonNull
+    @ColumnInfo(name = "dateStr")
+    private String dateStr;
+
+    @NonNull
+    @ColumnInfo(name = "timeStr")
+    private String timeStr;
 
     @NonNull
     @ColumnInfo(name = "medicationInfo")
-    private final String medicationName;
+    private String medicationName;
 
     @NonNull
     @ColumnInfo(name = "intakeQuantity")
-    private final String intakeQuantity;
+    private String intakeQuantity;
 
-    public MedicationTrackerModel(int medicationID, @NonNull String intakeDate, @NonNull String medicationName, @NonNull String intakeQuantity) {
+    public MedicationTrackerModel(@NonNull Integer medicationID, @NonNull Long timeStamp, @NonNull String dateStr, @NonNull String timeStr, @NonNull String medicationName, @NonNull String intakeQuantity) {
         this.medicationID = medicationID;
-        this.intakeDate = intakeDate;
+        this.timeStamp = timeStamp;
+        this.dateStr = dateStr;
+        this.timeStr = timeStr;
         this.medicationName = medicationName;
         this.intakeQuantity = intakeQuantity;
     }
 
-    public int getMedicationID() {
+    @NonNull
+    public Integer getMedicationID() {
         return medicationID;
     }
 
     @NonNull
-    public String getIntakeDate() {
-        return intakeDate;
+    public Long getTimeStamp() {
+        return timeStamp;
+    }
+
+    @NonNull
+    public String getDateStr() {
+        return dateStr;
+    }
+
+    @NonNull
+    public String getTimeStr() {
+        return timeStr;
     }
 
     @NonNull
