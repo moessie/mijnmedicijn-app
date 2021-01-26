@@ -27,4 +27,14 @@
     <string name="saturday">Zaterdag</string>
     <string name="sunday">Zondag</string>
     <string name="days">Dagen</string>
+    <string name="reminder_details">Herinnering Details</string>
+    <string name="change_reminder_time">Verander Herinnering tijd</string>
+    <string name="save_changes">Opslaan</string>
+    <string name="edit">Wijzig</string>
+    <string name="delete">Verwijder</string>
+    <string name="time_for_your_medicine">Mijnmedicijn - Tijd voor je medicatie</string>
+    <string name="taken">Genomen</string>
+    <string name="dosage">Dosering</string>
+    <string name="medicine_taken">Medicijn Genomen</string>
+    <string name="record_dose">Dosering Opslaan</string>
 </resources>

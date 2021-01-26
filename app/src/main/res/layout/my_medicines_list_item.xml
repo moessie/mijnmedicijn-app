@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/medicineCard"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardElevation="6dp"
+    app:cardCornerRadius="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_margin="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <RelativeLayout
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/medicineTitleTV"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerVertical="true"
+            android:text="Title"
+            android:textSize="15sp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            app:tint="@color/colorPrimary"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/double_arrows"
+            android:layout_width ="20dp"
+            android:layout_height="20dp"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

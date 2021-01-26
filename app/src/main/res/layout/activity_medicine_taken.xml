@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MedicineTakenActivity">
+
+    <LinearLayout
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/medicine_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/medicineNameTV"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="Panadol"/>
+
+        <RelativeLayout
+            android:background="@color/colorPrimaryTransp"
+            android:layout_marginTop="10dp"
+            android:layout_width="150dp"
+            android:layout_height="1dp"/>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/dosage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dosageTV"
+            android:fontFamily="@font/open_sans"
+            android:text="2 pill(s)"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:background="@color/colorPrimaryTransp"
+            android:layout_marginTop="10dp"
+            android:layout_width="150dp"
+            android:layout_height="1dp"/>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="Time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/intakeTimeTV"
+            android:fontFamily="@font/open_sans"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            android:text="12:45 AM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:background="@color/colorPrimaryTransp"
+            android:layout_marginTop="10dp"
+            android:layout_width="150dp"
+            android:layout_height="1dp"/>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/intakeDateTV"
+            android:fontFamily="@font/open_sans"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            android:text="22 Jan, 2021"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:background="@color/colorPrimaryTransp"
+            android:layout_marginTop="10dp"
+            android:layout_width="150dp"
+            android:layout_height="1dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/recordDoseBtn"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:cardCornerRadius="10dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="50dp"
+            app:cardElevation="4dp"
+            android:layout_width="180dp"
+            android:layout_height="50dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/glowing_primary_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:paddingStart="20dp"
+                    android:paddingEnd="0dp"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:text="@string/record_dose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="12dp"
+                    android:elevation="5dp"
+                    app:tint="@color/colorPrimaryDark"
+                    android:src="@drawable/record_ico"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

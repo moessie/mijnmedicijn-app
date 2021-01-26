@@ -47,11 +47,11 @@
                 android:id="@+id/medicineQuantityET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans_semibold"
+                android:fontFamily="@font/open_sans_bold"
                 android:inputType="numberDecimal"
                 android:maxLength="10"
                 android:maxLines="1"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
         <TextView
             android:layout_width="wrap_content"

@@ -3,16 +3,18 @@ package com.example.mustafa.mijnmedicijn;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.mustafa.mijnmedicijn.Room.RemindersDB;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 public class HomeActivity extends AppCompatActivity {
 
+    public static RemindersDB reminderDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,9 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+        reminderDB = RemindersDB.getInstance(getApplicationContext());
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -44,5 +48,13 @@ public class HomeActivity extends AppCompatActivity {
         else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(reminderDB!=null){
+            reminderDB.cleanUp();
+        }
+        super.onDestroy();
     }
 }

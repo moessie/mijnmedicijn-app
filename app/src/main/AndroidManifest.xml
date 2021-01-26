@@ -10,9 +10,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mijnmedicijn">
+
+        <activity android:name=".MedicineTakenActivity"
+            android:label="Track Medication"
+            android:parentActivityName=".HomeActivity"/>
+
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home"/>
+            android:label="@string/title_activity_home" />
+
         <activity android:name=".Authentication.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +30,8 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <receiver android:name=".Reminder.ReminderBroadcast"/>
+
+        <receiver android:name=".Broadcasts.ReminderBroadcast" />
     </application>
 
 </manifest>

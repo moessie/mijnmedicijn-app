@@ -1,42 +1,56 @@
 package com.example.mustafa.mijnmedicijn.ui.reminders;
 
-import android.app.Notification;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.mustafa.mijnmedicijn.R;
+import com.example.mustafa.mijnmedicijn.Recycler.adapters.RemindersListAdapter;
+import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import static com.example.mustafa.mijnmedicijn.App.CHANNEL_1_ID;
+import java.util.List;
+import static com.example.mustafa.mijnmedicijn.HomeActivity.reminderDB;
 
 public class RemindersFragment extends Fragment {
-
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    private RemindersListAdapter adapter;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_reminders, container, false);
         FloatingActionButton addReminderFAB = view.findViewById(R.id.addReminderFAB);
+        LinearLayout noRemindersMsg = view.findViewById(R.id.noRemindersMsg);
         addReminderFAB.setOnClickListener(v-> Navigation.findNavController(view).navigate(R.id.action_navigation_reminders_to_addReminderFragment));
 
+        final List<RemindersModel> remindersList = reminderDB.getRemindersDao().getMyReminders();
+
+        if(remindersList.isEmpty()){
+            noRemindersMsg.setVisibility(View.VISIBLE); // No reminders found
+        }
+        else {
+            noRemindersMsg.setVisibility(View.GONE);
+            setRemindersRV(view,remindersList);
+        }
         return view;
     }
 
-//    private void showNotification() {
-//        NotificationManagerCompat notificationManager= NotificationManagerCompat.from(getActivity());
-//        Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
-//                .setSmallIcon(R.drawable.email_small)
-//                .setContentTitle("Reminder")
-//                .setContentText("Take your medication") // TODO: Get this from DB
-//                .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-//                .build();
-//        notificationManager.notify(1, notification);
-//    }
+    private void setRemindersRV(View view,List<RemindersModel> remindersList) {
+        RecyclerView remindersRV = view.findViewById(R.id.remindersRV);
+        NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
+            remindersRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+            adapter = new RemindersListAdapter(remindersList,navController);
+            remindersRV.setAdapter(adapter);
+
+        }
+    }
+
+
 }

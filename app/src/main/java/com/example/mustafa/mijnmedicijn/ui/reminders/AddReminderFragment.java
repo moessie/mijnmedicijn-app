@@ -7,14 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +25,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.mustafa.mijnmedicijn.Broadcasts.ReminderBroadcast;
 import com.example.mustafa.mijnmedicijn.DataHelper;
 import com.example.mustafa.mijnmedicijn.R;
-import com.example.mustafa.mijnmedicijn.Recycler.SuggestionsAdapter;
-import com.example.mustafa.mijnmedicijn.Reminder.ReminderBroadcast;
+import com.example.mustafa.mijnmedicijn.Recycler.adapters.SuggestionsAdapter;
+import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -43,7 +44,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import java.util.TimeZone;
+
+import static com.example.mustafa.mijnmedicijn.HomeActivity.reminderDB;
 
 public class AddReminderFragment extends Fragment {
 
@@ -53,7 +55,8 @@ public class AddReminderFragment extends Fragment {
     private final List<String> suggestionsList = new ArrayList<>();
     private final List<String> medicinesList = DataHelper.getTestMedicines(); // TODO : Get this through API
     private String selectedUnit = "pill(s)"; // set a default selectedUnit, currently hardcoded but can be changed to first item of spinner
-    private int frequency = 1; // 0 = everyday, 1 = X alternate days , 2 = Selected WeekDays
+    private String alarmTime = "";
+    private int frequency = 0; // 0 = everyday, 1 = X alternate days , 2 = Selected WeekDays
     private TextInputEditText medicineNameET, medicineQuantityET;
     private LinearLayout repeatAfterXDays, daysOfWeek;
     private RelativeLayout addReminderLayout;
@@ -61,7 +64,8 @@ public class AddReminderFragment extends Fragment {
     private TextView ReminderTimeTV;
     private CheckBox mondayCB, tuesdayCB, wednesdayCB, thursdayCB, fridayCB, saturdayCB, sundayCB;
     private boolean timeSelected = false;
-
+    NavHostFragment navHostFragment;
+    NavController navController ;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_add_reminder, container, false);
@@ -72,6 +76,8 @@ public class AddReminderFragment extends Fragment {
     }
 
     private void findViews(View view) {
+        navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
         addReminderLayout = view.findViewById(R.id.addReminderLayout);
         addReminderFrag = view.findViewById(R.id.addReminderFrag);
         daysOfWeek = view.findViewById(R.id.daysOfWeek);
@@ -214,8 +220,8 @@ public class AddReminderFragment extends Fragment {
             if (minStr.length() == 1) {
                 minStr = "0" + minStr;
             }
-            final String selectedTime = hourStr + ":" + minStr + " " + am_pm;
-            ReminderTimeTV.setText(selectedTime);
+            alarmTime = hourStr + ":" + minStr + " " + am_pm;
+            ReminderTimeTV.setText(alarmTime);
             timeSelected = true;
             dialog.dismiss();
         });
@@ -240,13 +246,15 @@ public class AddReminderFragment extends Fragment {
         if (getActivity() != null) {
             final int _id = (int) System.currentTimeMillis(); // Alarm ID, to be used for cancellation
             Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
+            intent.putExtra("medicineName",medicineNameET.getText().toString());
+            intent.putExtra("dosage",medicineQuantityET.getText().toString()+" "+selectedUnit);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
             switch (frequency) {
                 case 0: // Everyday
                     alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-                    makeToast("Reminder set.");
-                    saveReminderInRoom();
+                    makeToast("Herinnering voor elke dag");
+                    saveReminderInRoom(_id,"Everyday");
                     break;
                 case 1:
                     String repeatDays = repeatDaysET.getText().toString();
@@ -256,53 +264,56 @@ public class AddReminderFragment extends Fragment {
                     }
                     int multiplier = Integer.parseInt(repeatDays);
                     alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), (AlarmManager.INTERVAL_DAY * multiplier), pendingIntent);
-                    makeToast("Je krijgt een herinnering elke " + repeatDays + " dagen");
-                    saveReminderInRoom();
+                    makeToast("You will be reminded after every " + repeatDays + " days");
+                    saveReminderInRoom(_id,"Repeat after every "+repeatDays+" days");
                     break;
                 case 2:
-                    String msg = "Herinnering voor ";
+                    String msg = "Herinnering opgeslagen voor";
                     boolean selection = false;
                     if (mondayCB.isChecked()) {
-                        setWeeklyReminder(2); msg = msg + " Maandag,"; selection = true;
+                        setWeeklyReminder(_id,2); msg = msg + " Maandag,"; selection = true;
                     } if (tuesdayCB.isChecked()) {
-                    setWeeklyReminder(3); msg = msg + " Dinsdag,";selection = true;
-                } if (wednesdayCB.isChecked()) {
-                    setWeeklyReminder(4); msg = msg + " Woensdag,";selection = true;
-                } if (thursdayCB.isChecked()) {
-                    setWeeklyReminder(5); msg = msg + " Donderdag,";selection = true;
-                } if (fridayCB.isChecked()) {
-                    setWeeklyReminder(6); msg = msg + " Vrijdag,";selection = true;
-                } if (saturdayCB.isChecked()) {
-                    setWeeklyReminder(7); msg = msg + " Zaterdag,";selection = true;
-                } if (sundayCB.isChecked()) {
-                    setWeeklyReminder(1); msg = msg + " Zondag,";selection = true;
-                }
+                        setWeeklyReminder(_id,3); msg = msg + " Dinsdag,";selection = true;
+                    } if (wednesdayCB.isChecked()) {
+                        setWeeklyReminder(_id,4); msg = msg + " Woensdag,";selection = true;
+                    } if (thursdayCB.isChecked()) {
+                        setWeeklyReminder(_id,5); msg = msg + " Donderdag,";selection = true;
+                    } if (fridayCB.isChecked()) {
+                        setWeeklyReminder(_id,6); msg = msg + " Vrijdag,";selection = true;
+                    } if (saturdayCB.isChecked()) {
+                        setWeeklyReminder(_id,7); msg = msg + " Zaterdag,";selection = true;
+                    } if (sundayCB.isChecked()) {
+                        setWeeklyReminder(_id,1); msg = msg + " Zondag,";selection = true;
+                    }
                     if(!selection){makeSnack("Selecteer tenminste 1 dag");}
-                    else {makeToast(msg);saveReminderInRoom();}
+                    else {makeToast(msg);saveReminderInRoom(_id,msg);}
                     break;
             }
-        } else {
-            Log.d("alarmLogs->", "Fun Failed");
         }
     }
 
-    private void setWeeklyReminder(int DayOfWeek) {
-//        if (getActivity() != null) {
-//            final int _id = (int) System.currentTimeMillis(); // Alarm ID, to be used for cancellation
-//            reminderTime.set(Calendar.DAY_OF_WEEK, DayOfWeek);
-//            Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
-//            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-//            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-//        }
+    private void setWeeklyReminder(int _id,int DayOfWeek) {
+        if (getActivity() != null) {
+            reminderTime.set(Calendar.DAY_OF_WEEK, DayOfWeek);
+            Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
+            intent.putExtra("medicineName",medicineNameET.getText().toString());
+            intent.putExtra("dosage",medicineQuantityET.getText().toString()+" "+selectedUnit);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
     }
-    private void saveReminderInRoom(){
-        // TODO :
+    private void saveReminderInRoom(int _id,String repeatInfo){
+        final String name = Objects.requireNonNull(medicineNameET.getText()).toString();
+        final String quantity = Objects.requireNonNull(medicineQuantityET.getText()).toString();
+        RemindersModel reminder = new RemindersModel(_id,name,selectedUnit,quantity,alarmTime,repeatInfo);
+        reminderDB.getRemindersDao().insertReminder(reminder);
+        navController.popBackStack();
     }
+
     private void makeSnack(String msg) {
         Snackbar.make(addReminderFrag, msg, Snackbar.LENGTH_LONG).show();
     }
-
     private void makeToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
