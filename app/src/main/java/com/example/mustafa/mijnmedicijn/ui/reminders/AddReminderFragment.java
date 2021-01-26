@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +17,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,7 @@ import static com.example.mustafa.mijnmedicijn.HomeActivity.reminderDB;
 public class AddReminderFragment extends Fragment {
 
     private SuggestionsAdapter suggestionsAdapter;
-    private ScrollView addReminderFrag;
+    private FrameLayout editReminderLayout;
     private final Calendar reminderTime = Calendar.getInstance();
     private final List<String> suggestionsList = new ArrayList<>();
     private final List<String> medicinesList = DataHelper.getTestMedicines(); // TODO : Get this through API
@@ -63,7 +64,8 @@ public class AddReminderFragment extends Fragment {
     private TextView ReminderTimeTV;
     private CheckBox mondayCB, tuesdayCB, wednesdayCB, thursdayCB, fridayCB, saturdayCB, sundayCB;
     private boolean timeSelected = false;
-
+    NavHostFragment navHostFragment;
+    NavController navController ;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_add_reminder, container, false);
@@ -74,8 +76,10 @@ public class AddReminderFragment extends Fragment {
     }
 
     private void findViews(View view) {
+        navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
         addReminderLayout = view.findViewById(R.id.addReminderLayout);
-        addReminderFrag = view.findViewById(R.id.addReminderFrag);
+        editReminderLayout = view.findViewById(R.id.editReminderLayout);
         daysOfWeek = view.findViewById(R.id.daysOfWeek);
         repeatDaysET = view.findViewById(R.id.repeatDays);
         ReminderTimeTV = view.findViewById(R.id.ReminderTimeTV);
@@ -246,7 +250,7 @@ public class AddReminderFragment extends Fragment {
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
             switch (frequency) {
                 case 0: // Everyday
-                    //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                     makeToast("Herinnering voor elke dag");
                     saveReminderInRoom(_id,"Everyday");
                     break;
@@ -257,12 +261,12 @@ public class AddReminderFragment extends Fragment {
                         return;
                     }
                     int multiplier = Integer.parseInt(repeatDays);
-                    //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), (AlarmManager.INTERVAL_DAY * multiplier), pendingIntent);
+                    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), (AlarmManager.INTERVAL_DAY * multiplier), pendingIntent);
                     makeToast("You will be reminded after every " + repeatDays + " days");
                     saveReminderInRoom(_id,"Repeat after every "+repeatDays+" days");
                     break;
                 case 2:
-                    String msg = "Herinnering opgeslagen voor ";
+                    String msg = "Herinnering opgeslagen voor";
                     boolean selection = false;
                     if (mondayCB.isChecked()) {
                         setWeeklyReminder(_id,2); msg = msg + " Maandag,"; selection = true;
@@ -283,18 +287,16 @@ public class AddReminderFragment extends Fragment {
                     else {makeToast(msg);saveReminderInRoom(_id,msg);}
                     break;
             }
-        } else {
-            Log.d("alarmLogs->", "Fun Failed");
         }
     }
 
     private void setWeeklyReminder(int _id,int DayOfWeek) {
         if (getActivity() != null) {
-//            reminderTime.set(Calendar.DAY_OF_WEEK, DayOfWeek);
-//            Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
-//            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-//            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            reminderTime.set(Calendar.DAY_OF_WEEK, DayOfWeek);
+            Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         }
     }
     private void saveReminderInRoom(int _id,String repeatInfo){
@@ -302,10 +304,10 @@ public class AddReminderFragment extends Fragment {
         final String quantity = Objects.requireNonNull(medicineQuantityET.getText()).toString();
         RemindersModel reminder = new RemindersModel(_id,name,selectedUnit,quantity,alarmTime,repeatInfo);
         reminderDB.getRemindersDao().insertReminder(reminder);
-        //Navigation.findNavController().popBackStack(); // TODO : Pass View parameter
+        navController.popBackStack();
     }
     private void makeSnack(String msg) {
-        Snackbar.make(addReminderFrag, msg, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(editReminderLayout, msg, Snackbar.LENGTH_LONG).show();
     }
     private void makeToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();

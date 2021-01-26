@@ -12,7 +12,7 @@ import java.util.List;
 
 @Dao
 public interface RemindersDataDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertReminder(RemindersModel reminder);
 
     @Delete

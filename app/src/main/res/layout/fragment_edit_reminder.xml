@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editReminderLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -319,23 +320,53 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/saveReminderFAB"
-                android:text="@string/save_changes"
-                android:gravity="center"
-                app:icon="@drawable/save_icon"
-                app:iconTint="@android:color/white"
-                android:textSize="16sp"
-                android:textAllCaps="false"
-                android:letterSpacing="0.04"
-                android:textColor="@android:color/white"
-                android:fontFamily="@font/open_sans_bold"
+            <LinearLayout
                 android:layout_marginTop="50dp"
-                android:layout_marginBottom="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="220dp"
-                android:layout_height="wrap_content"/>
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/editReminderFAB"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="50dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:gravity="center"
+                    android:letterSpacing="0.04"
+                    android:text="@string/edit"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    app:icon="@drawable/edit_ico"
+                    app:iconTint="@android:color/white" />
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/deleteReminderFAB"
+                    android:backgroundTint="@android:color/holo_red_light"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="50dp"
+                    android:layout_weight="1"
+                    android:text="@string/delete"
+                    android:gravity="center"
+                    app:icon="@drawable/delete_ico"
+                    app:iconTint="@android:color/white"
+                    android:textSize="16sp"
+                    android:textAllCaps="false"
+                    android:letterSpacing="0.04"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
 
         </LinearLayout>
 
