@@ -27,4 +27,7 @@
     <string name="saturday">Zaterdag</string>
     <string name="sunday">Zondag</string>
     <string name="days">Dagen</string>
+    <string name="reminder_details">Herinnering Details</string>
+    <string name="change_reminder_time">Verander Herinnering tijd</string>
+    <string name="save_changes">Opslaan</string>
 </resources>

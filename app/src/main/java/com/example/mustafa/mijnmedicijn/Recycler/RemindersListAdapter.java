@@ -1,12 +1,14 @@
 package com.example.mustafa.mijnmedicijn.Recycler;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mustafa.mijnmedicijn.R;
 import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
@@ -14,10 +16,12 @@ import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
 import java.util.List;
 
 public class RemindersListAdapter extends RecyclerView.Adapter<RemindersListAdapter.MyViewHolder>{
-    private List<RemindersModel>remindersList;
+    private final List<RemindersModel>remindersList;
+    private final NavController parentNavController;
 
-    public RemindersListAdapter(List<RemindersModel> remindersList){
+    public RemindersListAdapter(List<RemindersModel> remindersList, NavController parentNavController){
         this.remindersList = remindersList;
+        this.parentNavController = parentNavController;
     }
 
     @NonNull
@@ -43,16 +47,25 @@ public class RemindersListAdapter extends RecyclerView.Adapter<RemindersListAdap
             holder.ampmTV.setText("PM");
         }
         holder.timeTV.setText(time);
+        int frequency;
         if(reminder.getReminderRepeatInfo().startsWith("Reminder")){
             holder.frequencyTV.setText("Weekdays");
+            frequency = 2;
         }
         else if(reminder.getReminderRepeatInfo().startsWith("Repeat")){
             holder.frequencyTV.setText("After X Days");
+            frequency = 1;
         }
-        else {holder.frequencyTV.setText("Everyday");}
+        else {holder.frequencyTV.setText("Everyday"); frequency = 0;}
 
-        holder.reminderItem.setOnClickListener(v->{
-            //TODO : Goto reminder details Frag
+        holder.reminderItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle extras = new Bundle();
+                extras.putInt("reminderID",reminder.get_id());
+                extras.putInt("frequency",frequency);
+                parentNavController.navigate(R.id.action_navigation_reminders_to_reminderDetailsFragment,extras);
+            }
         });
     }
 

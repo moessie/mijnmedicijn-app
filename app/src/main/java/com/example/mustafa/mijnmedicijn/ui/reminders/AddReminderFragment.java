@@ -55,7 +55,7 @@ public class AddReminderFragment extends Fragment {
     private final List<String> medicinesList = DataHelper.getTestMedicines(); // TODO : Get this through API
     private String selectedUnit = "pill(s)"; // set a default selectedUnit, currently hardcoded but can be changed to first item of spinner
     private String alarmTime = "";
-    private int frequency = 1; // 0 = everyday, 1 = X alternate days , 2 = Selected WeekDays
+    private int frequency = 0; // 0 = everyday, 1 = X alternate days , 2 = Selected WeekDays
     private TextInputEditText medicineNameET, medicineQuantityET;
     private LinearLayout repeatAfterXDays, daysOfWeek;
     private RelativeLayout addReminderLayout;

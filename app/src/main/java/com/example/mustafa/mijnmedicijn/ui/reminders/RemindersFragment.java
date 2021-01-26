@@ -5,13 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mustafa.mijnmedicijn.R;
 import com.example.mustafa.mijnmedicijn.Recycler.RemindersListAdapter;
 import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
@@ -20,7 +20,7 @@ import java.util.List;
 import static com.example.mustafa.mijnmedicijn.HomeActivity.reminderDB;
 
 public class RemindersFragment extends Fragment {
-
+    private RemindersListAdapter adapter;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_reminders, container, false);
         FloatingActionButton addReminderFAB = view.findViewById(R.id.addReminderFAB);
@@ -36,15 +36,21 @@ public class RemindersFragment extends Fragment {
             noRemindersMsg.setVisibility(View.GONE);
             setRemindersRV(view,remindersList);
         }
-
         return view;
     }
 
     private void setRemindersRV(View view,List<RemindersModel> remindersList) {
         RecyclerView remindersRV = view.findViewById(R.id.remindersRV);
-        remindersRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-        RemindersListAdapter adapter = new RemindersListAdapter(remindersList);
-        remindersRV.setAdapter(adapter);
+        NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
+            remindersRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+            adapter = new RemindersListAdapter(remindersList,navController);
+            remindersRV.setAdapter(adapter);
+
+        }
     }
+
 
 }
