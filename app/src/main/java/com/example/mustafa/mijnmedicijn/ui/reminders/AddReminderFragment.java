@@ -204,6 +204,7 @@ public class AddReminderFragment extends Fragment {
             reminderTime.set(Calendar.HOUR_OF_DAY, hour);
             reminderTime.set(Calendar.MINUTE, minute);
             reminderTime.set(Calendar.SECOND, 0);
+            reminderTime.set(Calendar.MILLISECOND, 0);
 
             if (hour >= 12) {
                 am_pm = "PM";
