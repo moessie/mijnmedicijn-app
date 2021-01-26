@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signInFrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -102,6 +103,29 @@
             android:fontFamily="@font/open_sans_bold"
             android:textColor="@color/colorPrimary"
             android:text="@string/sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/signInPrgrs"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:alpha="0.6"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"/>
+        <TextView
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:layout_marginTop="5dp"
+            android:text="Signing In....."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

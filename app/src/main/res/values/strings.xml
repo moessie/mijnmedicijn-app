@@ -37,4 +37,5 @@
     <string name="dosage">Dosering</string>
     <string name="medicine_taken">Medicijn Genomen</string>
     <string name="record_dose">Dosering Opslaan</string>
+    <string name="username">Gebruikersnaam</string>
 </resources>
