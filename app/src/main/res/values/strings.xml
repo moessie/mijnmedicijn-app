@@ -32,4 +32,6 @@
     <string name="save_changes">Opslaan</string>
     <string name="edit">Wijzig</string>
     <string name="delete">Verwijder</string>
+    <string name="time_for_your_medicine">Mijnmedicijn - Tijd voor je medicatie</string>
+    <string name="taken">Genomen</string>
 </resources>

@@ -28,6 +28,7 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         reminderDB = RemindersDB.getInstance(getApplicationContext());
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -47,5 +48,13 @@ public class HomeActivity extends AppCompatActivity {
         else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(reminderDB!=null){
+            reminderDB.cleanUp();
+        }
+        super.onDestroy();
     }
 }

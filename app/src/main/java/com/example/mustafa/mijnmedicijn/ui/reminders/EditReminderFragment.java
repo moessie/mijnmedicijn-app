@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -50,7 +49,7 @@ public class EditReminderFragment extends Fragment {
     private int reminderID;
     private int frequency = 0; // 0 = everyday, 1 = X alternate days , 2 = Selected WeekDays
     /////////////////////////////////////////////////////////
-    private ScrollView addReminderFrag;
+    private FrameLayout editReminderLayout;
     private final Calendar reminderTime = Calendar.getInstance();
     private String selectedUnit = "pill(s)"; // set a default selectedUnit, currently hardcoded but can be changed to first item of spinner
     private String alarmTime = "";
@@ -61,8 +60,8 @@ public class EditReminderFragment extends Fragment {
     private TextView ReminderTimeTV;
     private CheckBox mondayCB, tuesdayCB, wednesdayCB, thursdayCB, fridayCB, saturdayCB, sundayCB;
     private boolean timeSelected = false;
-    NavHostFragment navHostFragment;
-    NavController navController;
+    private NavHostFragment navHostFragment;
+    private NavController navController;
 
     public EditReminderFragment() {
         // Required empty public constructor
@@ -107,7 +106,7 @@ public class EditReminderFragment extends Fragment {
         navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         addReminderLayout = view.findViewById(R.id.addReminderLayout);
-        addReminderFrag = view.findViewById(R.id.addReminderFrag);
+        editReminderLayout = view.findViewById(R.id.editReminderLayout);
         daysOfWeek = view.findViewById(R.id.daysOfWeek);
         repeatDaysET = view.findViewById(R.id.repeatDays);
         ReminderTimeTV = view.findViewById(R.id.ReminderTimeTV);
@@ -227,6 +226,8 @@ public class EditReminderFragment extends Fragment {
         if (getActivity() != null) {
             final int _id = reminder.get_id(); // Alarm ID, to be used for cancellation
             Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
+            intent.putExtra("medicineName",medicineNameET.getText().toString());
+            intent.putExtra("dosage",medicineQuantityET.getText().toString()+" "+selectedUnit);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(pendingIntent); // First cancel existing id alarm
@@ -248,7 +249,7 @@ public class EditReminderFragment extends Fragment {
                     saveReminderInRoom(_id, "Repeat after every " + repeatDays + " days");
                     break;
                 case 2:
-                    String msg = "Herinnering opgeslagen voor";
+                    String msg = "Herinnering opgeslagen voor ";
                     boolean selection = false;
                     if (mondayCB.isChecked()) {
                         setWeeklyReminder(_id, 2);
@@ -293,8 +294,6 @@ public class EditReminderFragment extends Fragment {
                     }
                     break;
             }
-        } else {
-            Log.d("alarmLogs->", "Fun Failed");
         }
     }
 
@@ -302,6 +301,8 @@ public class EditReminderFragment extends Fragment {
         if (getActivity() != null) {
             reminderTime.set(Calendar.DAY_OF_WEEK, DayOfWeek);
             Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
+            intent.putExtra("medicineName",medicineNameET.getText().toString());
+            intent.putExtra("dosage",medicineQuantityET.getText().toString()+" "+selectedUnit);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
@@ -319,7 +320,7 @@ public class EditReminderFragment extends Fragment {
     private void deleteReminder(RemindersModel reminder) {
         Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), reminder.get_id(), intent, 0);
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        AlarmManager  alarmManager  = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent); // First cancel existing id alarm
         AlertDialog alertDialog = new AlertDialog.Builder(requireActivity()).create();
         alertDialog.setTitle("Confirm action");
@@ -332,6 +333,7 @@ public class EditReminderFragment extends Fragment {
         });
         alertDialog.show();
     }
+
 
     private void showTimePicker() {
         final Dialog dialog = new Dialog(getActivity());
@@ -382,7 +384,7 @@ public class EditReminderFragment extends Fragment {
     }
 
     private void makeSnack(String msg) {
-        Snackbar.make(addReminderFrag, msg, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(editReminderLayout, msg, Snackbar.LENGTH_LONG).show();
     }
 
     private void makeToast(String msg) {

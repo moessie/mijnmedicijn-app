@@ -1,4 +1,4 @@
-package com.example.mustafa.mijnmedicijn.Room;
+package com.example.mustafa.mijnmedicijn.Room.Dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

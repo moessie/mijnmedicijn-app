@@ -17,9 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -50,7 +50,7 @@ import static com.example.mustafa.mijnmedicijn.HomeActivity.reminderDB;
 public class AddReminderFragment extends Fragment {
 
     private SuggestionsAdapter suggestionsAdapter;
-    private FrameLayout editReminderLayout;
+    private ScrollView addReminderFrag;
     private final Calendar reminderTime = Calendar.getInstance();
     private final List<String> suggestionsList = new ArrayList<>();
     private final List<String> medicinesList = DataHelper.getTestMedicines(); // TODO : Get this through API
@@ -79,7 +79,7 @@ public class AddReminderFragment extends Fragment {
         navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         addReminderLayout = view.findViewById(R.id.addReminderLayout);
-        editReminderLayout = view.findViewById(R.id.editReminderLayout);
+        addReminderFrag = view.findViewById(R.id.addReminderFrag);
         daysOfWeek = view.findViewById(R.id.daysOfWeek);
         repeatDaysET = view.findViewById(R.id.repeatDays);
         ReminderTimeTV = view.findViewById(R.id.ReminderTimeTV);
@@ -246,6 +246,8 @@ public class AddReminderFragment extends Fragment {
         if (getActivity() != null) {
             final int _id = (int) System.currentTimeMillis(); // Alarm ID, to be used for cancellation
             Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
+            intent.putExtra("medicineName",medicineNameET.getText().toString());
+            intent.putExtra("dosage",medicineQuantityET.getText().toString()+" "+selectedUnit);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
             switch (frequency) {
@@ -271,7 +273,7 @@ public class AddReminderFragment extends Fragment {
                     if (mondayCB.isChecked()) {
                         setWeeklyReminder(_id,2); msg = msg + " Maandag,"; selection = true;
                     } if (tuesdayCB.isChecked()) {
-                        setWeeklyReminder(_id,3); msg = msg + " Dinsdsg,";selection = true;
+                        setWeeklyReminder(_id,3); msg = msg + " Dinsdag,";selection = true;
                     } if (wednesdayCB.isChecked()) {
                         setWeeklyReminder(_id,4); msg = msg + " Woensdag,";selection = true;
                     } if (thursdayCB.isChecked()) {
@@ -294,6 +296,8 @@ public class AddReminderFragment extends Fragment {
         if (getActivity() != null) {
             reminderTime.set(Calendar.DAY_OF_WEEK, DayOfWeek);
             Intent intent = new Intent(getActivity(), ReminderBroadcast.class);
+            intent.putExtra("medicineName",medicineNameET.getText().toString());
+            intent.putExtra("dosage",medicineQuantityET.getText().toString()+" "+selectedUnit);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), _id, intent, 0);
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
@@ -306,8 +310,9 @@ public class AddReminderFragment extends Fragment {
         reminderDB.getRemindersDao().insertReminder(reminder);
         navController.popBackStack();
     }
+
     private void makeSnack(String msg) {
-        Snackbar.make(editReminderLayout, msg, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(addReminderFrag, msg, Snackbar.LENGTH_LONG).show();
     }
     private void makeToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
