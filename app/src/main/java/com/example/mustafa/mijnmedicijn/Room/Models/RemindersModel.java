@@ -1,4 +1,4 @@
-package com.example.mustafa.mijnmedicijn.Room;
+package com.example.mustafa.mijnmedicijn.Room.Models;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "remindersData")
-public class RemindersData {
+public class RemindersModel {
     @PrimaryKey
     @ColumnInfo(name = "_id")
     private final int _id;
@@ -31,7 +31,7 @@ public class RemindersData {
     @ColumnInfo(name = "reminderRepeatInfo")
     private final String reminderRepeatInfo;
 
-    public RemindersData(int _id, @NonNull String medicineName, @NonNull String doseUnit, @NonNull String doseQuantity, @NonNull String reminderTime, @NonNull String reminderRepeatInfo) {
+    public RemindersModel(int _id, @NonNull String medicineName, @NonNull String doseUnit, @NonNull String doseQuantity, @NonNull String reminderTime, @NonNull String reminderRepeatInfo) {
         this._id = _id;
         this.medicineName = medicineName;
         this.doseUnit = doseUnit;

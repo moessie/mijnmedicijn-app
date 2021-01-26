@@ -5,16 +5,19 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
+
 import java.util.List;
 
 @Dao
 public interface RemindersDataDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertReminder(RemindersData reminder);
+    void insertReminder(RemindersModel reminder);
 
     @Delete
-    void deleteReminder(RemindersData model);
+    void deleteReminder(RemindersModel model);
 
-    @Query("SELECT * FROM remindersData")
-    List<RemindersData> getMyReminders();
+    @Query("SELECT * FROM RemindersModel")
+    List<RemindersModel> getMyReminders();
 }

@@ -4,10 +4,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.mustafa.mijnmedicijn.Room.RemindersDB;
-import com.example.mustafa.mijnmedicijn.Room.RemindersData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;

@@ -34,7 +34,7 @@ import com.example.mustafa.mijnmedicijn.Broadcasts.ReminderBroadcast;
 import com.example.mustafa.mijnmedicijn.DataHelper;
 import com.example.mustafa.mijnmedicijn.R;
 import com.example.mustafa.mijnmedicijn.Recycler.SuggestionsAdapter;
-import com.example.mustafa.mijnmedicijn.Room.RemindersData;
+import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -262,7 +262,7 @@ public class AddReminderFragment extends Fragment {
                     saveReminderInRoom(_id,"Repeat after every "+repeatDays+" days");
                     break;
                 case 2:
-                    String msg = "Herinnering opgeslagen ";
+                    String msg = "Herinnering opgeslagen voor ";
                     boolean selection = false;
                     if (mondayCB.isChecked()) {
                         setWeeklyReminder(_id,2); msg = msg + " Maandag,"; selection = true;
@@ -300,7 +300,7 @@ public class AddReminderFragment extends Fragment {
     private void saveReminderInRoom(int _id,String repeatInfo){
         final String name = Objects.requireNonNull(medicineNameET.getText()).toString();
         final String quantity = Objects.requireNonNull(medicineQuantityET.getText()).toString();
-        RemindersData reminder = new RemindersData(_id,name,selectedUnit,quantity,alarmTime,repeatInfo);
+        RemindersModel reminder = new RemindersModel(_id,name,selectedUnit,quantity,alarmTime,repeatInfo);
         reminderDB.getRemindersDao().insertReminder(reminder);
         //Navigation.findNavController().popBackStack(); // TODO : Pass View parameter
     }
