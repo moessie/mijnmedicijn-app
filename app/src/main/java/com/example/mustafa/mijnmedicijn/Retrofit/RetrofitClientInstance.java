@@ -1,6 +1,7 @@
 package com.example.mustafa.mijnmedicijn.Retrofit;
 
-import com.example.mustafa.mijnmedicijn.Retrofit.models.LoginBody;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.login.LoginBody;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.login.LoginResponse;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.signup.SignupBody;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.signup.SignupResponse;
 
@@ -33,7 +34,7 @@ public class RetrofitClientInstance {
 
         @Headers({"Accept: application/json","Content-Type: application/json"})
         @POST("api/auth/login")
-        Call<SignupBody>loginUser(@Body LoginBody authInfo);
+        Call<LoginResponse>loginUser(@Body LoginBody authInfo);
     }
 
 }
