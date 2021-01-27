@@ -23,7 +23,7 @@ import retrofit2.http.Path;
 public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
-    private static final String BASE_URL = "http://55dccfd888bc.ngrok.io/";
+    private static final String BASE_URL = "https://92d9727432d5.ngrok.io/";
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
@@ -44,10 +44,12 @@ public class RetrofitClientInstance {
         @POST("api/auth/login")
         Call<LoginResponse>loginUser(@Body LoginBody authInfo);
 
+        ////////////////// Live Suggestions
         @Headers({"Accept: application/json","Content-Type: application/json"})
         @GET("api/search/{query}")
-        Call<SearchResponse>getMedicinesList(@Path("query") String query);
+        Call<SearchResponse>getMedicinesList(@Header("Authorization") String authToken,@Path("query") String query);
 
+        ///////////////// Post newly created reminder to API
         @Headers({"Accept: application/json","Content-Type: application/json"})
         @POST("api/reminder")
         Call<RemindersResponse>postReminderToApi(@Header("Authorization") String authToken, @Body RemindersBody remindersBody);
@@ -55,6 +57,6 @@ public class RetrofitClientInstance {
         @Headers({"Accept: application/json","Content-Type: application/json"})
         @POST("api/tracker")
         Call<TrackerResponse>postMedicineIntake(@Header("Authorization") String authToken, @Body TrackerBody trackerBody);
-    }
 
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.mustafa.mijnmedicijn.ui.reminders;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,22 +23,33 @@ import static com.example.mustafa.mijnmedicijn.HomeActivity.reminderDB;
 
 public class RemindersFragment extends Fragment {
     private RemindersListAdapter adapter;
+    private SharedPreferences prefs;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_reminders, container, false);
+        prefs = requireActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
         FloatingActionButton addReminderFAB = view.findViewById(R.id.addReminderFAB);
         LinearLayout noRemindersMsg = view.findViewById(R.id.noRemindersMsg);
         addReminderFAB.setOnClickListener(v-> Navigation.findNavController(view).navigate(R.id.action_navigation_reminders_to_addReminderFragment));
 
-        final List<RemindersModel> remindersList = reminderDB.getRemindersDao().getMyReminders();
-
-        if(remindersList.isEmpty()){
-            noRemindersMsg.setVisibility(View.VISIBLE); // No reminders found
-        }
-        else {
-            noRemindersMsg.setVisibility(View.GONE);
-            setRemindersRV(view,remindersList);
+        if(getUserID()!=null){
+            final List<RemindersModel> remindersList = reminderDB.getRemindersDao().getMyReminders(getUserID());
+            if(remindersList.isEmpty()){
+                noRemindersMsg.setVisibility(View.VISIBLE); // No reminders found
+            }
+            else{
+                noRemindersMsg.setVisibility(View.GONE);
+                setRemindersRV(view,remindersList);
+            }
         }
         return view;
+    }
+
+    private String getUserID(){
+        if(prefs.contains("UserId")){
+            return prefs.getString("UserId",null);
+        }
+        return null;
     }
 
     private void setRemindersRV(View view,List<RemindersModel> remindersList) {
@@ -48,9 +61,7 @@ public class RemindersFragment extends Fragment {
             remindersRV.setLayoutManager(new LinearLayoutManager(getActivity()));
             adapter = new RemindersListAdapter(remindersList,navController);
             remindersRV.setAdapter(adapter);
-
         }
     }
-
 
 }

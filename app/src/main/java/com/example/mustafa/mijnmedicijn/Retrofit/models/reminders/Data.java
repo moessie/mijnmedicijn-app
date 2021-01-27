@@ -3,6 +3,8 @@ package com.example.mustafa.mijnmedicijn.Retrofit.models.reminders;
 import com.google.gson.annotations.SerializedName;
 
 public class Data{
+	@SerializedName("id")
+	private int id;
 
 	@SerializedName("reminder_time")
 	private String reminderTime;
@@ -25,11 +27,20 @@ public class Data{
 	@SerializedName("reminder_repeat_info")
 	private String reminderRepeatInfo;
 
-	@SerializedName("id")
-	private int id;
-
 	@SerializedName("medicine_name")
 	private String medicineName;
+
+	public Data(int id, String reminderTime, String doseUnit, String updatedAt, int userId, String doseQuantity, String createdAt, String reminderRepeatInfo, String medicineName) {
+		this.id = id;
+		this.reminderTime = reminderTime;
+		this.doseUnit = doseUnit;
+		this.updatedAt = updatedAt;
+		this.userId = userId;
+		this.doseQuantity = doseQuantity;
+		this.createdAt = createdAt;
+		this.reminderRepeatInfo = reminderRepeatInfo;
+		this.medicineName = medicineName;
+	}
 
 	public String getReminderTime(){
 		return reminderTime;

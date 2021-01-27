@@ -11,6 +11,7 @@
     <string name="don_t_have_an_account">Geen account?</string>
     <string name="confirm_password">Wachtwoord bevestigen</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="medicine_name">Medicijn naam</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -38,4 +39,15 @@
     <string name="medicine_taken">Medicijn Genomen</string>
     <string name="record_dose">Dosering Opslaan</string>
     <string name="username">Gebruikersnaam</string>
+    <string name="quantity">Hoeveelheid</string>
+    <string name="unit">Soort</string>
+    <string name="add_reminder_time">Selecteer een tijd</string>
+    <string name="frequency_of_intake">Hoevaak innemen</string>
+    <string name="repeat_after_every">Herhaal elke</string>
+    <string name="save_reminder">Opslaan herinnering</string>
+    <string name="choose_reminder_time">Kies een tijd</string>
+    <string name="done">Klaar</string>
+
+
+
 </resources>

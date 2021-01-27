@@ -18,8 +18,8 @@ public interface RemindersDataDao {
     @Delete
     void deleteReminder(RemindersModel model);
 
-    @Query("SELECT * FROM remindersData")
-    List<RemindersModel> getMyReminders();
+    @Query("SELECT * FROM remindersData WHERE userId IN (:userId)")
+    List<RemindersModel> getMyReminders(String userId);
 
     @Query("SELECT * FROM remindersData WHERE _id IN (:reminderID)")
     RemindersModel loadSingle(int reminderID);

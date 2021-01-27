@@ -86,10 +86,12 @@ public class AddReminderFragment extends Fragment {
     private NavHostFragment navHostFragment;
     private NavController navController;
     private RetrofitClientInstance.RetroInterFace service;
+    private SharedPreferences prefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_add_reminder, container, false);
+        prefs = requireActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
         service = RetrofitClientInstance.getRetrofitInstance().create(RetrofitClientInstance.RetroInterFace.class);
         findViews(view);
         setUpSpinners(view);
@@ -133,39 +135,41 @@ public class AddReminderFragment extends Fragment {
                 suggestionsList.clear();
                 suggestionsAdapter.notifyDataSetChanged();
                 if (!queryText.isEmpty()) {
-                    try {
-                        if (isNetworkConnected() && isInternetWorking()) {
-                            Call<SearchResponse> searchCall = service.getMedicinesList(queryText);
-                            searchCall.enqueue(new Callback<SearchResponse>() {
-                                @Override
-                                public void onResponse(@NotNull Call<SearchResponse> call, @NotNull Response<SearchResponse> response) {
-                                    if (response.code() == 200 && response.body() != null && response.body().getData() != null) {
-                                        final List<DataItem> medicinesList = response.body().getData();
-                                        if (!medicinesList.isEmpty()) {
-                                            suggestionsList.clear();
-                                            for(DataItem med : medicinesList){
-                                                suggestionsList.add(med.getName());
-                                                reminderDB.getMedsSuggestionDao().addSuggestion(new MedsSuggestionsModel(med.getId(),med.getName())); // Save item for offline use
-                                            }
+                    if (isNetworkConnected()) {
+                        Call<SearchResponse> searchCall = service.getMedicinesList("Bearer "+getAuthToken(),queryText);
+                        searchCall.enqueue(new Callback<SearchResponse>() {
+                            @Override
+                            public void onResponse(@NotNull Call<SearchResponse> call, @NotNull Response<SearchResponse> response) {
+                                Log.d("suggestionsLogs->","OnResponse() ->"+response.code());
+                                if (response.code() == 200 && response.body() != null && response.body().getData() != null) {
+                                    final List<DataItem> medicinesList = response.body().getData();
+                                    if (!medicinesList.isEmpty()) {
+                                        suggestionsList.clear();
+                                        for(DataItem med : medicinesList){
+                                            suggestionsList.add(med.getName());
+                                            suggestionsAdapter.notifyDataSetChanged();
+                                            reminderDB.getMedsSuggestionDao().addSuggestion(new MedsSuggestionsModel(med.getId(),med.getName())); // Save item for offline use
                                         }
                                     }
                                 }
-                                @Override
-                                public void onFailure(@NotNull Call<SearchResponse> call, @NotNull Throwable t) { }
-                            });
-                        }
-                        else {
-                            final List<MedsSuggestionsModel>offlineSuggestions = reminderDB.getMedsSuggestionDao().getSuggestionsList();
-                            suggestionsList.clear();
-                            for(MedsSuggestionsModel suggestion : offlineSuggestions){
-                                if(suggestion.getMedicineName().contains(queryText)){
-                                    suggestionsList.add(suggestion.getMedicineName());
-                                }
+                            }
+                            @Override
+                            public void onFailure(@NotNull Call<SearchResponse> call, @NotNull Throwable t) {
+                                Log.d("suggestionsLogs->","request Failed.");
+                            }
+                        });
+                    }
+                    else {
+                        final List<MedsSuggestionsModel>offlineSuggestions = reminderDB.getMedsSuggestionDao().getSuggestionsList();
+                        suggestionsList.clear();
+                        for(MedsSuggestionsModel suggestion : offlineSuggestions){
+                            if(suggestion.getMedicineName().contains(queryText)){
+                                suggestionsList.add(suggestion.getMedicineName());
+                                suggestionsAdapter.notifyDataSetChanged();
                             }
                         }
-                    } catch (InterruptedException | IOException e) { e.printStackTrace(); }
+                    }
                 }
-                suggestionsAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -183,10 +187,11 @@ public class AddReminderFragment extends Fragment {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    public boolean isInternetWorking() throws InterruptedException, IOException {
-        String command = "ping -c 1 google.com";
-        return Runtime.getRuntime().exec(command).waitFor() == 0;
-    }
+//    public boolean isInternetWorking() throws InterruptedException, IOException {
+//        String command = "ping -c 1 google.com";
+//        return Runtime.getRuntime().exec(command).waitFor() == 0;
+//    }
+
 
     private void setUpSpinners(View view) {
         final Spinner unitSpinner = view.findViewById(R.id.unitSpinner);
@@ -390,7 +395,7 @@ public class AddReminderFragment extends Fragment {
     private void saveReminderInRoom(int _id, String repeatInfo) {
         final String name = Objects.requireNonNull(medicineNameET.getText()).toString();
         final String quantity = Objects.requireNonNull(medicineQuantityET.getText()).toString();
-        RemindersModel reminder = new RemindersModel(_id, name, selectedUnit, quantity, alarmTime, repeatInfo);
+        RemindersModel reminder = new RemindersModel(_id,getUserID(), name, selectedUnit, quantity, alarmTime, repeatInfo);
         reminderDB.getRemindersDao().insertReminder(reminder);
         if(getAuthToken()!=null){
             Call<RemindersResponse> postReminderCall = service.postReminderToApi("Bearer "+ getAuthToken(),new RemindersBody(alarmTime,selectedUnit,quantity,repeatInfo,name));
@@ -402,7 +407,6 @@ public class AddReminderFragment extends Fragment {
                     }
                     else { Log.d("remindersLog->","Post failed, Code = "+response.code()); }
                 }
-
                 @Override
                 public void onFailure(@NotNull Call<RemindersResponse> call, @NotNull Throwable t) {
                     Log.d("remindersLog->","Failed to Post reminder to API.");
@@ -415,6 +419,13 @@ public class AddReminderFragment extends Fragment {
     private String getAuthToken(){
         final SharedPreferences preferences = requireActivity().getSharedPreferences("AuthPrefs",Context.MODE_PRIVATE);
         return preferences.getString("AuthToken",null);
+    }
+
+    private String getUserID(){
+        if(prefs.contains("UserId")){
+            return prefs.getString("UserId",null);
+        }
+        return null;
     }
 
     private void makeSnack(String msg) {
