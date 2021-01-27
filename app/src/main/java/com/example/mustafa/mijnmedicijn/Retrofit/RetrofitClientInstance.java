@@ -2,15 +2,23 @@ package com.example.mustafa.mijnmedicijn.Retrofit;
 
 import com.example.mustafa.mijnmedicijn.Retrofit.models.login.LoginBody;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.login.LoginResponse;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.reminders.RemindersBody;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.reminders.RemindersResponse;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.search.SearchResponse;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.signup.SignupBody;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.signup.SignupResponse;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.tracker.TrackerBody;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.tracker.TrackerResponse;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public class RetrofitClientInstance {
 
@@ -35,6 +43,18 @@ public class RetrofitClientInstance {
         @Headers({"Accept: application/json","Content-Type: application/json"})
         @POST("api/auth/login")
         Call<LoginResponse>loginUser(@Body LoginBody authInfo);
+
+        @Headers({"Accept: application/json","Content-Type: application/json"})
+        @GET("api/search/{query}")
+        Call<SearchResponse>getMedicinesList(@Path("query") String query);
+
+        @Headers({"Accept: application/json","Content-Type: application/json"})
+        @POST("api/reminder")
+        Call<RemindersResponse>postReminderToApi(@Header("Authorization") String authToken, @Body RemindersBody remindersBody);
+
+        @Headers({"Accept: application/json","Content-Type: application/json"})
+        @POST("api/tracker")
+        Call<TrackerResponse>postMedicineIntake(@Header("Authorization") String authToken, @Body TrackerBody trackerBody);
     }
 
 }

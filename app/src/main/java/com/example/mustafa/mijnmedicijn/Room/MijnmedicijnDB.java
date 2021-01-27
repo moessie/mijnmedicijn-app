@@ -6,30 +6,34 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.mustafa.mijnmedicijn.Room.Dao.MedicationTrackerDao;
+import com.example.mustafa.mijnmedicijn.Room.Dao.MedsSuggestionDao;
 import com.example.mustafa.mijnmedicijn.Room.Dao.RemindersDataDao;
 import com.example.mustafa.mijnmedicijn.Room.Models.MedicationTrackerModel;
+import com.example.mustafa.mijnmedicijn.Room.Models.MedsSuggestionsModel;
 import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
 
 
-@Database(entities = { RemindersModel.class,MedicationTrackerModel.class}, version = 1)
-public abstract class RemindersDB extends RoomDatabase {
+@Database(entities = { RemindersModel.class,MedicationTrackerModel.class, MedsSuggestionsModel.class}, version = 2)
+
+public abstract class MijnmedicijnDB extends RoomDatabase {
 
     public abstract RemindersDataDao getRemindersDao();
     public abstract MedicationTrackerDao getMedicationTrackerDao();
+    public abstract MedsSuggestionDao getMedsSuggestionDao();
 
-    private static RemindersDB remindersDB;
+    private static MijnmedicijnDB remindersDB;
 
-    public static RemindersDB getInstance(Context context) {
+    public static MijnmedicijnDB getInstance(Context context) {
         if (remindersDB == null) {
             remindersDB = buildDatabaseInstance(context);
         }
         return remindersDB;
     }
 
-    private static RemindersDB buildDatabaseInstance(Context context) {
+    private static MijnmedicijnDB buildDatabaseInstance(Context context) {
         return Room.databaseBuilder(context,
-                RemindersDB.class,
-                "reminders.db")
+                MijnmedicijnDB.class,
+                "mijnmedicijn.db")
                 .allowMainThreadQueries().build();
     }
 

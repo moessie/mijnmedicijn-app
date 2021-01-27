@@ -5,9 +5,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +27,11 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.mustafa.mijnmedicijn.Broadcasts.ReminderBroadcast;
 import com.example.mustafa.mijnmedicijn.DataHelper;
@@ -211,16 +215,16 @@ public class EditReminderFragment extends Fragment {
 
     private void setReminder(RemindersModel reminder) {
         if (Objects.requireNonNull(medicineNameET.getText()).toString().isEmpty()) {
-            makeSnack("Vul medicijn naam in");
+            makeSnack("Enter Medicine Name");
             return;
         }
         final String quantity = Objects.requireNonNull(medicineQuantityET.getText()).toString();
         if (quantity.isEmpty() || quantity.equals("0")) {
-            makeSnack("Vul hoeveelheid in");
+            makeSnack("Enter Medicine Quantity");
             return;
         }
         if (!timeSelected) {
-            makeSnack("De tijd is niet ingesteld");
+            makeSnack("Reminder time not set");
             return;
         }
         if (getActivity() != null) {
@@ -249,45 +253,45 @@ public class EditReminderFragment extends Fragment {
                     saveReminderInRoom(_id, "Repeat after every " + repeatDays + " days");
                     break;
                 case 2:
-                    String msg = "Herinnering opgeslagen voor ";
+                    String msg = "Reminder set for ";
                     boolean selection = false;
                     if (mondayCB.isChecked()) {
                         setWeeklyReminder(_id, 2);
-                        msg = msg + " Maandag,";
+                        msg = msg + " Monday,";
                         selection = true;
                     }
                     if (tuesdayCB.isChecked()) {
                         setWeeklyReminder(_id, 3);
-                        msg = msg + " Dinsdag,";
+                        msg = msg + " Tuesday,";
                         selection = true;
                     }
                     if (wednesdayCB.isChecked()) {
                         setWeeklyReminder(_id, 4);
-                        msg = msg + " Woensdag,";
+                        msg = msg + " Wednesday,";
                         selection = true;
                     }
                     if (thursdayCB.isChecked()) {
                         setWeeklyReminder(_id, 5);
-                        msg = msg + " Donderdag,";
+                        msg = msg + " Thursday,";
                         selection = true;
                     }
                     if (fridayCB.isChecked()) {
                         setWeeklyReminder(_id, 6);
-                        msg = msg + " Vrijdag,";
+                        msg = msg + " Friday,";
                         selection = true;
                     }
                     if (saturdayCB.isChecked()) {
                         setWeeklyReminder(_id, 7);
-                        msg = msg + " Zaterdag,";
+                        msg = msg + " Saturday,";
                         selection = true;
                     }
                     if (sundayCB.isChecked()) {
                         setWeeklyReminder(_id, 1);
-                        msg = msg + " Zondag,";
+                        msg = msg + " Sunday,";
                         selection = true;
                     }
                     if (!selection) {
-                        makeSnack("Selecteer tenminste 1 dag");
+                        makeSnack("Select at least 1 day.");
                     } else {
                         makeToast(msg);
                         saveReminderInRoom(_id, msg);

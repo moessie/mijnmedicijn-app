@@ -1,4 +1,4 @@
-package com.example.mustafa.mijnmedicijn;
+package com.example.mustafa.mijnmedicijn.Authentication;
 
 import android.content.Context;
 import android.content.Intent;
@@ -40,7 +40,7 @@ public class SignUpFragment extends Fragment {
     private FrameLayout signUpFrag;
     private LinearLayout signUpPrgrs;
     private RetrofitClientInstance.RetroInterFace service;
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
