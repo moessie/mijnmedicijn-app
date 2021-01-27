@@ -5,13 +5,11 @@ import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mustafa.mijnmedicijn.Room.MijnmedicijnDB;
 import com.example.mustafa.mijnmedicijn.Room.Models.MedicationTrackerModel;
-import com.example.mustafa.mijnmedicijn.Room.RemindersDB;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,7 +21,7 @@ import java.util.Locale;
 
 public class MedicineTakenActivity extends AppCompatActivity {
 
-    private RemindersDB myDB = null;
+    private MijnmedicijnDB myDB = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +49,7 @@ public class MedicineTakenActivity extends AppCompatActivity {
                 dosageTV.setText(dosage);
 
                 recordDoseBtn.setOnClickListener(view -> {
-                    myDB = RemindersDB.getInstance(getApplicationContext());
+                    myDB = MijnmedicijnDB.getInstance(getApplicationContext());
                     myDB.getMedicationTrackerDao().insertMedication(new MedicationTrackerModel((int) System.currentTimeMillis(), System.currentTimeMillis(),df.format(c),tf.format(c), medicineName, dosage));
                     Toast.makeText(MedicineTakenActivity.this,"Medication recorded.",Toast.LENGTH_SHORT).show();
                     goToHome();
