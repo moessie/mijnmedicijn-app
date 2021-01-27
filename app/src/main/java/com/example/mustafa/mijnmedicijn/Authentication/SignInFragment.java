@@ -4,11 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +11,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.mustafa.mijnmedicijn.HomeActivity;
 import com.example.mustafa.mijnmedicijn.R;
@@ -39,8 +37,7 @@ public class SignInFragment extends Fragment {
     private FrameLayout signInFrag;
     private LinearLayout signInPrgrs;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
         signInPrgrs = view.findViewById(R.id.signInPrgrs);
@@ -77,15 +74,14 @@ public class SignInFragment extends Fragment {
                     if(response.code()==200){
                         final SharedPreferences prefs = requireActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
                         if (response.body() != null) {
+                            prefs.edit().putString("UserId",email).apply();
                             prefs.edit().putString("AuthToken",response.body().getAccessToken()).apply();
                         }
-                        showToast("Signed In.");
+                        showToast();
                         startActivity(new Intent(requireActivity(), HomeActivity.class));
                         requireActivity().finish();
                     }
-                    else {
-                        showSnack("Failed to sign in. Please make sure your credentials are correct.");
-                    }
+                    else { showSnack("Failed to sign in. Please make sure your credentials are correct."); }
                 }
                 else {
                     signInPrgrs.setVisibility(View.GONE);
@@ -106,8 +102,8 @@ public class SignInFragment extends Fragment {
         Snackbar.make(signInFrag,msg,Snackbar.LENGTH_LONG).show();
     }
 
-    private void showToast(String msg){
-        Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+    private void showToast(){
+        Toast.makeText(getActivity(), "Signed In.",Toast.LENGTH_LONG).show();
     }
 
 }

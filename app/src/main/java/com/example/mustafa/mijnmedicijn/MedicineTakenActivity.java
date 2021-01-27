@@ -35,12 +35,13 @@ import retrofit2.Response;
 public class MedicineTakenActivity extends AppCompatActivity {
 
     private MijnmedicijnDB myDB = null;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_taken);
-
+        prefs = getSharedPreferences("AuthPrefs",MODE_PRIVATE);
         final TextView intakeTimeTV = findViewById(R.id.intakeTimeTV);
         final TextView intakeDateTV = findViewById(R.id.intakeDateTV);
         Date c = Calendar.getInstance().getTime();
@@ -63,7 +64,7 @@ public class MedicineTakenActivity extends AppCompatActivity {
 
                 recordDoseBtn.setOnClickListener(view -> {
                     myDB = MijnmedicijnDB.getInstance(getApplicationContext());
-                    myDB.getMedicationTrackerDao().insertMedication(new MedicationTrackerModel((int) System.currentTimeMillis(), System.currentTimeMillis(),df.format(c),tf.format(c), medicineName, dosage));
+                    myDB.getMedicationTrackerDao().insertMedication(new MedicationTrackerModel((int) System.currentTimeMillis(),getUserID(), System.currentTimeMillis(),df.format(c),tf.format(c), medicineName, dosage));
                     Toast.makeText(MedicineTakenActivity.this,"Medication recorded.",Toast.LENGTH_SHORT).show();
                     if(getAuthToken()!=null){
                         final RetrofitClientInstance.RetroInterFace service = RetrofitClientInstance.getRetrofitInstance().create(RetrofitClientInstance.RetroInterFace.class);
@@ -79,7 +80,7 @@ public class MedicineTakenActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(@NotNull Call<TrackerResponse> call, @NotNull Throwable t) {
-                                Log.d("remindersLog->","Failed to Post medicine dosage to API.");
+                                Log.d("medicineIntake->","Failed to Post medicine dosage to API.");
                             }
                         });
                     }
@@ -90,10 +91,14 @@ public class MedicineTakenActivity extends AppCompatActivity {
     }
 
     private String getAuthToken(){
-        final SharedPreferences preferences = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
-        return preferences.getString("AuthToken",null);
+        return prefs.getString("AuthToken",null);
     }
-
+    private String getUserID(){
+        if(prefs.contains("UserId")){
+            return prefs.getString("UserId",null);
+        }
+        return null;
+    }
     private void goToHome() {
         startActivity(new Intent(this, HomeActivity.class));
         finish();

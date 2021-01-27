@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -36,13 +37,22 @@ import android.widget.Toast;
 import com.example.mustafa.mijnmedicijn.Broadcasts.ReminderBroadcast;
 import com.example.mustafa.mijnmedicijn.DataHelper;
 import com.example.mustafa.mijnmedicijn.R;
+import com.example.mustafa.mijnmedicijn.Retrofit.RetrofitClientInstance;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.reminders.RemindersBody;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.reminders.RemindersResponse;
 import com.example.mustafa.mijnmedicijn.Room.Models.RemindersModel;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Calendar;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.example.mustafa.mijnmedicijn.HomeActivity.reminderDB;
 
@@ -66,6 +76,8 @@ public class EditReminderFragment extends Fragment {
     private boolean timeSelected = false;
     private NavHostFragment navHostFragment;
     private NavController navController;
+    private SharedPreferences prefs;
+    private RetrofitClientInstance.RetroInterFace service;
 
     public EditReminderFragment() {
         // Required empty public constructor
@@ -84,6 +96,8 @@ public class EditReminderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_edit_reminder, container, false);
+        prefs = requireActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+        service = RetrofitClientInstance.getRetrofitInstance().create(RetrofitClientInstance.RetroInterFace.class);
         if (reminderID == 0) {
             Navigation.findNavController(view).popBackStack();
         } else {
@@ -316,9 +330,32 @@ public class EditReminderFragment extends Fragment {
     private void saveReminderInRoom(int _id, String repeatInfo) {
         final String name = Objects.requireNonNull(medicineNameET.getText()).toString();
         final String quantity = Objects.requireNonNull(medicineQuantityET.getText()).toString();
-        RemindersModel reminder = new RemindersModel(_id, name, selectedUnit, quantity, alarmTime, repeatInfo);
+        RemindersModel reminder = new RemindersModel(_id, Objects.requireNonNull(getUserID()), name, selectedUnit, quantity, alarmTime, repeatInfo);
         reminderDB.getRemindersDao().insertReminder(reminder);
+
+        if(getAuthToken()!=null){
+            Call<RemindersResponse> postReminderCall = service.postReminderToApi("Bearer "+ getAuthToken(),new RemindersBody(alarmTime,selectedUnit,quantity,repeatInfo,name));
+            postReminderCall.enqueue(new Callback<RemindersResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<RemindersResponse> call, @NotNull Response<RemindersResponse> response) {
+                    if(response.code()==201){
+                        Log.d("remindersLog->","Posted reminder to API. Status= "+response.code());
+                    }
+                    else { Log.d("remindersLog->","Post failed, Code = "+response.code()); }
+                }
+                @Override
+                public void onFailure(@NotNull Call<RemindersResponse> call, @NotNull Throwable t) {
+                    Log.d("remindersLog->","Failed to Post reminder to API.");
+                }
+            });
+        }
+
         navController.popBackStack();
+    }
+
+    private String getAuthToken(){
+        final SharedPreferences preferences = requireActivity().getSharedPreferences("AuthPrefs",Context.MODE_PRIVATE);
+        return preferences.getString("AuthToken",null);
     }
 
     private void deleteReminder(RemindersModel reminder) {
@@ -337,7 +374,6 @@ public class EditReminderFragment extends Fragment {
         });
         alertDialog.show();
     }
-
 
     private void showTimePicker() {
         final Dialog dialog = new Dialog(getActivity());
@@ -385,6 +421,13 @@ public class EditReminderFragment extends Fragment {
         });
 
         dialog.show();
+    }
+
+    private String getUserID(){
+        if(prefs.contains("UserId")){
+            return prefs.getString("UserId",null);
+        }
+        return null;
     }
 
     private void makeSnack(String msg) {

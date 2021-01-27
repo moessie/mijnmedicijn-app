@@ -1,5 +1,6 @@
 package com.example.mustafa.mijnmedicijn.ui.medication;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,13 +20,14 @@ import com.example.mustafa.mijnmedicijn.Room.Models.MedicationTrackerModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.mustafa.mijnmedicijn.HomeActivity.reminderDB;
 
 public class IntakeHistoryFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "medicineName";
-
     private String medicineName;
+    private SharedPreferences prefs;
 
     public IntakeHistoryFragment() {
         // Required empty public constructor
@@ -44,10 +46,11 @@ public class IntakeHistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_intake_history, container, false);
+        prefs = requireActivity().getSharedPreferences("AuthPrefs",MODE_PRIVATE);
         if(medicineName!=null){
             final TextView title = view.findViewById(R.id.medNameTV);
             title.setText(medicineName);
-            final List<MedicationTrackerModel> medicationRecord = reminderDB.getMedicationTrackerDao().loadSelected(medicineName);
+            final List<MedicationTrackerModel> medicationRecord = reminderDB.getMedicationTrackerDao().loadSelected(getUserID(),medicineName);
             if(medicationRecord!=null && medicationRecord.size()>0){
                 final List<String>dateTracker = new ArrayList<>();
                 final RecyclerView medHistoryRV = view.findViewById(R.id.medHistoryRV);
@@ -76,5 +79,12 @@ public class IntakeHistoryFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private String getUserID(){
+        if(prefs.contains("UserId")){
+            return prefs.getString("UserId",null);
+        }
+        return null;
     }
 }

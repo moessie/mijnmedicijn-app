@@ -11,30 +11,35 @@ public class MedicationTrackerModel {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "medicationID")
-    Integer medicationID;
+    final Integer medicationID;
+
+    @NonNull
+    @ColumnInfo (name = "userID")
+    final String userID;
 
     @NonNull
     @ColumnInfo(name = "timeStamp")
-    private Long timeStamp;
+    final private Long timeStamp;
 
     @NonNull
     @ColumnInfo(name = "dateStr")
-    private String dateStr;
+    final private String dateStr;
 
     @NonNull
     @ColumnInfo(name = "timeStr")
-    private String timeStr;
+    final private String timeStr;
 
     @NonNull
     @ColumnInfo(name = "medicationInfo")
-    private String medicationName;
+    final private String medicationName;
 
     @NonNull
     @ColumnInfo(name = "intakeQuantity")
-    private String intakeQuantity;
+    final private String intakeQuantity;
 
-    public MedicationTrackerModel(@NonNull Integer medicationID, @NonNull Long timeStamp, @NonNull String dateStr, @NonNull String timeStr, @NonNull String medicationName, @NonNull String intakeQuantity) {
+    public MedicationTrackerModel(@NonNull Integer medicationID, @NonNull String userID, @NonNull Long timeStamp, @NonNull String dateStr, @NonNull String timeStr, @NonNull String medicationName, @NonNull String intakeQuantity) {
         this.medicationID = medicationID;
+        this.userID = userID;
         this.timeStamp = timeStamp;
         this.dateStr = dateStr;
         this.timeStr = timeStr;
@@ -45,6 +50,11 @@ public class MedicationTrackerModel {
     @NonNull
     public Integer getMedicationID() {
         return medicationID;
+    }
+
+    @NonNull
+    public String getUserID() {
+        return userID;
     }
 
     @NonNull

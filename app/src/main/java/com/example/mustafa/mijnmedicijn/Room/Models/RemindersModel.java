@@ -12,6 +12,10 @@ public class RemindersModel {
     private final int _id;
 
     @NonNull
+    @ColumnInfo(name =  "userId")
+    private final String userID;
+
+    @NonNull
     @ColumnInfo(name = "medicineName")
     private final String medicineName;
 
@@ -31,8 +35,9 @@ public class RemindersModel {
     @ColumnInfo(name = "reminderRepeatInfo")
     private final String reminderRepeatInfo;
 
-    public RemindersModel(int _id, @NonNull String medicineName, @NonNull String doseUnit, @NonNull String doseQuantity, @NonNull String reminderTime, @NonNull String reminderRepeatInfo) {
+    public RemindersModel(int _id, @NonNull String userID, @NonNull String medicineName, @NonNull String doseUnit, @NonNull String doseQuantity, @NonNull String reminderTime, @NonNull String reminderRepeatInfo) {
         this._id = _id;
+        this.userID = userID;
         this.medicineName = medicineName;
         this.doseUnit = doseUnit;
         this.doseQuantity = doseQuantity;
@@ -42,6 +47,11 @@ public class RemindersModel {
 
     public int get_id() {
         return _id;
+    }
+
+    @NonNull
+    public String getUserID() {
+        return userID;
     }
 
     @NonNull

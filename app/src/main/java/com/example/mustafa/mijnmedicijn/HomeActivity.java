@@ -38,11 +38,13 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         String token = null;
+        String uid = null;
         final SharedPreferences prefs = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
         if(prefs.contains("AuthToken")){
             token = prefs.getString("AuthToken",null);
         }
-        if(token == null){
+        if(prefs.contains("UserId")){uid = prefs.getString("UserId",null);}
+        if(token == null || uid ==null){
             Toast.makeText(this,"Failed to authenticate. Please Sign In.",Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, AuthActivity.class));
             finish();

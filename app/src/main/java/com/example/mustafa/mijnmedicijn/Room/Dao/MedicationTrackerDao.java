@@ -17,13 +17,12 @@ public interface MedicationTrackerDao {
     @Delete
     void deleteReminder(MedicationTrackerModel medicationInfo);
 
-    @Query("SELECT * FROM medicationTrackerData")
-    List<MedicationTrackerModel> getMyMedicationHistory();
+    @Query("SELECT * FROM medicationTrackerData WHERE userID IN (:userID)")
+    List<MedicationTrackerModel> getMyMedicationHistory(String userID);
 
-    @Query("SELECT * FROM medicationTrackerData WHERE medicationInfo IN (:medicineName)")
-    List<MedicationTrackerModel> loadSelected(String medicineName);
+    @Query("SELECT * FROM medicationTrackerData WHERE userID IN (:userID) AND medicationInfo IN (:medicineName)  ")
+    List<MedicationTrackerModel> loadSelected(String userID, String medicineName);
 
     @Query("SELECT * FROM medicationTrackerData WHERE medicationInfo IN (:medicineName) AND dateStr IN (:intakeDate)")
     List<MedicationTrackerModel> loadSelectedDate(String medicineName,String intakeDate);
-
 }
