@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +42,8 @@ import com.example.mustafa.mijnmedicijn.Broadcasts.ReminderBroadcast;
 import com.example.mustafa.mijnmedicijn.Retrofit.RetrofitClientInstance;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.login.LoginBody;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.login.LoginResponse;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.reminders.RemindersBody;
+import com.example.mustafa.mijnmedicijn.Retrofit.models.reminders.RemindersResponse;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.search.DataItem;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.search.SearchResponse;
 import com.example.mustafa.mijnmedicijn.Room.Models.MedsSuggestionsModel;
@@ -70,7 +73,6 @@ public class AddReminderFragment extends Fragment {
     private ScrollView addReminderFrag;
     private final Calendar reminderTime = Calendar.getInstance();
     private final List<String> suggestionsList = new ArrayList<>();
-    private final List<String> medicinesList = DataHelper.getTestMedicines(); // TODO : Get this through API
     private String selectedUnit = "pill(s)"; // set a default selectedUnit, currently hardcoded but can be changed to first item of spinner
     private String alarmTime = "";
     private int frequency = 0; // 0 = everyday, 1 = X alternate days , 2 = Selected WeekDays
@@ -134,7 +136,6 @@ public class AddReminderFragment extends Fragment {
                     try {
                         if (isNetworkConnected() && isInternetWorking()) {
                             Call<SearchResponse> searchCall = service.getMedicinesList(queryText);
-                            Log.d("retroLogs->","Call = "+searchCall.request());
                             searchCall.enqueue(new Callback<SearchResponse>() {
                                 @Override
                                 public void onResponse(@NotNull Call<SearchResponse> call, @NotNull Response<SearchResponse> response) {
@@ -150,8 +151,7 @@ public class AddReminderFragment extends Fragment {
                                     }
                                 }
                                 @Override
-                                public void onFailure(@NotNull Call<SearchResponse> call, @NotNull Throwable t) {
-                                }
+                                public void onFailure(@NotNull Call<SearchResponse> call, @NotNull Throwable t) { }
                             });
                         }
                         else {
@@ -163,9 +163,7 @@ public class AddReminderFragment extends Fragment {
                                 }
                             }
                         }
-                    } catch (InterruptedException | IOException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (InterruptedException | IOException e) { e.printStackTrace(); }
                 }
                 suggestionsAdapter.notifyDataSetChanged();
             }
@@ -394,7 +392,29 @@ public class AddReminderFragment extends Fragment {
         final String quantity = Objects.requireNonNull(medicineQuantityET.getText()).toString();
         RemindersModel reminder = new RemindersModel(_id, name, selectedUnit, quantity, alarmTime, repeatInfo);
         reminderDB.getRemindersDao().insertReminder(reminder);
+        if(getAuthToken()!=null){
+            Call<RemindersResponse> postReminderCall = service.postReminderToApi("Bearer "+ getAuthToken(),new RemindersBody(alarmTime,selectedUnit,quantity,repeatInfo,name));
+            postReminderCall.enqueue(new Callback<RemindersResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<RemindersResponse> call, @NotNull Response<RemindersResponse> response) {
+                    if(response.code()==201){
+                        Log.d("remindersLog->","Posted reminder to API. Status= "+response.code());
+                    }
+                    else { Log.d("remindersLog->","Post failed, Code = "+response.code()); }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<RemindersResponse> call, @NotNull Throwable t) {
+                    Log.d("remindersLog->","Failed to Post reminder to API.");
+                }
+            });
+        }
         navController.popBackStack();
+    }
+
+    private String getAuthToken(){
+        final SharedPreferences preferences = requireActivity().getSharedPreferences("AuthPrefs",Context.MODE_PRIVATE);
+        return preferences.getString("AuthToken",null);
     }
 
     private void makeSnack(String msg) {
