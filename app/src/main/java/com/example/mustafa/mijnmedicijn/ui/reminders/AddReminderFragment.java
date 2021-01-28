@@ -9,13 +9,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -35,13 +28,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.mustafa.mijnmedicijn.Broadcasts.ReminderBroadcast;
 import com.example.mustafa.mijnmedicijn.DataHelper;
 import com.example.mustafa.mijnmedicijn.R;
 import com.example.mustafa.mijnmedicijn.Recycler.adapters.SuggestionsAdapter;
-import com.example.mustafa.mijnmedicijn.Broadcasts.ReminderBroadcast;
 import com.example.mustafa.mijnmedicijn.Retrofit.RetrofitClientInstance;
-import com.example.mustafa.mijnmedicijn.Retrofit.models.login.LoginBody;
-import com.example.mustafa.mijnmedicijn.Retrofit.models.login.LoginResponse;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.reminders.RemindersBody;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.reminders.RemindersResponse;
 import com.example.mustafa.mijnmedicijn.Retrofit.models.search.DataItem;
@@ -54,8 +51,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -317,60 +312,60 @@ public class AddReminderFragment extends Fragment {
             switch (frequency) {
                 case 0: // Everyday
                     alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-                    makeToast("Reminder set for everyday.");
+                    makeToast("Herinnering opgeslagen voor elkedag");
                     saveReminderInRoom(_id, "Everyday");
                     break;
                 case 1:
                     String repeatDays = repeatDaysET.getText().toString();
                     if (repeatDays.isEmpty() || repeatDays.equals("0")) {
-                        makeSnack("Repeat days should be greater than 0");
+                        makeSnack("Dagen moet groter zijn dan 0");
                         return;
                     }
                     int multiplier = Integer.parseInt(repeatDays);
                     alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTime.getTimeInMillis(), (AlarmManager.INTERVAL_DAY * multiplier), pendingIntent);
-                    makeToast("You will be reminded after every " + repeatDays + " days");
+                    makeToast("Je krijgt elke " + repeatDays + " dagen een herinnering");
                     saveReminderInRoom(_id, "Repeat after every " + repeatDays + " days");
                     break;
                 case 2:
-                    String msg = "Reminder set for ";
+                    String msg = "Herinnering voor ";
                     boolean selection = false;
                     if (mondayCB.isChecked()) {
                         setWeeklyReminder(_id, 2);
-                        msg = msg + " Monday,";
+                        msg = msg + " Maandag,";
                         selection = true;
                     }
                     if (tuesdayCB.isChecked()) {
                         setWeeklyReminder(_id, 3);
-                        msg = msg + " Tuesday,";
+                        msg = msg + " Dinsdag,";
                         selection = true;
                     }
                     if (wednesdayCB.isChecked()) {
                         setWeeklyReminder(_id, 4);
-                        msg = msg + " Wednesday,";
+                        msg = msg + " Woensdag,";
                         selection = true;
                     }
                     if (thursdayCB.isChecked()) {
                         setWeeklyReminder(_id, 5);
-                        msg = msg + " Thursday,";
+                        msg = msg + " Donderdag,";
                         selection = true;
                     }
                     if (fridayCB.isChecked()) {
                         setWeeklyReminder(_id, 6);
-                        msg = msg + " Friday,";
+                        msg = msg + " Vrijdag,";
                         selection = true;
                     }
                     if (saturdayCB.isChecked()) {
                         setWeeklyReminder(_id, 7);
-                        msg = msg + " Saturday,";
+                        msg = msg + " Zaterdag,";
                         selection = true;
                     }
                     if (sundayCB.isChecked()) {
                         setWeeklyReminder(_id, 1);
-                        msg = msg + " Sunday,";
+                        msg = msg + " Zondag,";
                         selection = true;
                     }
                     if (!selection) {
-                        makeSnack("Select at least 1 day.");
+                        makeSnack("Selecteer tenminste 1 dag");
                     } else {
                         makeToast(msg);
                         saveReminderInRoom(_id, msg);

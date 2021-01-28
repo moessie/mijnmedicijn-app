@@ -32,10 +32,10 @@ public class SettingsFragment extends Fragment {
 
         LogoutBtn.setOnClickListener(v->{
             AlertDialog alertDialog = new AlertDialog.Builder(requireActivity()).create();
-            alertDialog.setTitle("Confirm action");
-            alertDialog.setMessage("Are you sure you want to log out ?");
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", (dialog, which) -> dialog.dismiss());
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", (dialog, which) -> {
+            alertDialog.setTitle("Bevestig");
+            alertDialog.setMessage("Weetje zeker dat je wilt uitloggen ?");
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Nee", (dialog, which) -> dialog.dismiss());
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ja", (dialog, which) -> {
                 prefs.edit().remove("UserId").apply();
                 prefs.edit().remove("AuthToken").apply();
                 startActivity(new Intent(requireActivity(), AuthActivity.class));
