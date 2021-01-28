@@ -13,7 +13,7 @@
         android:textSize="14sp"
         android:textColor="@color/colorPrimary"
         android:fontFamily="@font/open_sans_semibold"
-        android:text="User"
+        android:text="Gebruikersnaam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
@@ -36,7 +36,7 @@
         android:textSize="14sp"
         android:textColor="@color/colorPrimary"
         android:fontFamily="@font/open_sans_semibold"
-        android:text="Age"
+        android:text="Leeftijd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <EditText
@@ -93,7 +93,7 @@
             <TextView
                 android:fontFamily="@font/open_sans_semibold"
                 android:textSize="18sp"
-                android:text="Log Out"
+                android:text="Uitloggen"
                 android:textColor="@color/redTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

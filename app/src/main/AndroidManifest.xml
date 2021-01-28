@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mijnmedicijn">
 
+
         <activity android:name=".MedicineTakenActivity"
             android:label="Track Medication"
             android:parentActivityName=".HomeActivity"/>

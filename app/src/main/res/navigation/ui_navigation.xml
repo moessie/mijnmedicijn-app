@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/addReminderFragment"
         android:name="com.example.mustafa.mijnmedicijn.ui.reminders.AddReminderFragment"
-        android:label="Medication Details"
+        android:label="Medicatie Details"
         tools:layout="@layout/fragment_add_reminder" />
     <fragment
         android:id="@+id/reminderDetailsFragment"
@@ -52,6 +52,6 @@
     <fragment
         android:id="@+id/intakeHistoryFragment"
         android:name="com.example.mustafa.mijnmedicijn.ui.medication.IntakeHistoryFragment"
-        android:label="Medication Record"
+        android:label="Opgeslagen herinnering"
         tools:layout="@layout/fragment_intake_history" />
 </navigation>

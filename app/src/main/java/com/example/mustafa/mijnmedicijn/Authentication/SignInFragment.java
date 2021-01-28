@@ -54,10 +54,10 @@ public class SignInFragment extends Fragment {
         TextInputEditText passwordET = view.findViewById(R.id.LoginPasswordET);
 
         final String email = Objects.requireNonNull(emailET.getText()).toString().trim();
-        if(email.isEmpty()){showSnack("Please enter your email."); return;}
+        if(email.isEmpty()){showSnack("Typ je e-mail"); return;}
 
         final String password = Objects.requireNonNull(passwordET.getText()).toString().trim();
-        if(password.isEmpty()){showSnack("Please enter your password."); return;}
+        if(password.isEmpty()){showSnack("Typ je wachtwoord"); return;}
 
         loginUser(email,password);
 
@@ -81,18 +81,18 @@ public class SignInFragment extends Fragment {
                         startActivity(new Intent(requireActivity(), HomeActivity.class));
                         requireActivity().finish();
                     }
-                    else { showSnack("Failed to sign in. Please make sure your credentials are correct."); }
+                    else { showSnack("Foute inlog gegevens"); }
                 }
                 else {
                     signInPrgrs.setVisibility(View.GONE);
-                    showSnack("Failed to sign in. Please make sure your credentials are correct.");
+                    showSnack("Foute inlog gegevens");
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
                 signInPrgrs.setVisibility(View.GONE);
-                showSnack("Sign In request failed.");
+                showSnack("Niet gelukt om in te loggen");
             }
         });
     }
@@ -103,7 +103,7 @@ public class SignInFragment extends Fragment {
     }
 
     private void showToast(){
-        Toast.makeText(getActivity(), "Signed In.",Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Ingelogd",Toast.LENGTH_LONG).show();
     }
 
 }

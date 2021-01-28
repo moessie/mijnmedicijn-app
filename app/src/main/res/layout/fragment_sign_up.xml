@@ -17,9 +17,9 @@
 
             <!--To use this you need to change styles.xml to Material i.e Theme.MaterialComponents.Light.NoActionBar!-->
             <ImageView
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="120dp"
                 android:src="@drawable/app_logo" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="30dp"
                 android:paddingStart="50dp"
                 android:paddingEnd  ="50dp"
                 android:layout_gravity="center_horizontal"
@@ -119,36 +119,35 @@
                 app:icon="@drawable/login_ico"
                 android:text="@string/sign_up"/>
 
+            <LinearLayout
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:textSize="14sp"
+                    android:text="@string/already_have_an_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/SignInSwitchTV"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/sign_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:gravity="center"
-        android:layout_gravity="bottom"
-        android:layout_margin="30dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:fontFamily="@font/open_sans_semibold"
-            android:textSize="14sp"
-            android:text="@string/already_have_an_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/SignInSwitchTV"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:focusable="true"
-            android:clickable="true"
-            android:paddingBottom="2dp"
-            android:layout_marginStart="8dp"
-            android:textSize="15sp"
-            android:fontFamily="@font/open_sans_bold"
-            android:textColor="@color/colorPrimary"
-            android:text="@string/sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/signUpPrgrs"
