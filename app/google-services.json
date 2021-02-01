@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "550313201032",
-    "project_id": "mijnmedicijn-57782",
-    "storage_bucket": "mijnmedicijn-57782.appspot.com"
+    "project_number": "797748712625",
+    "project_id": "mijnmedicijn-89ecd",
+    "storage_bucket": "mijnmedicijn-89ecd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:550313201032:android:10781632c07fc17d5b7e3d",
+        "mobilesdk_app_id": "1:797748712625:android:c514603b062a850944be90",
         "android_client_info": {
           "package_name": "com.example.mustafa.mijnmedicijn"
         }
       },
       "oauth_client": [
         {
-          "client_id": "550313201032-m2vdhevopq0bjk1p2c1rgu8gp4hihgp1.apps.googleusercontent.com",
+          "client_id": "797748712625-mkv4a2lkvg2ljlv6cs6t7r823nmj90tr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDJk-d5OZ-GtESl5ojCMWKTkUI-2GeXKRY"
+          "current_key": "AIzaSyAtF3cix7_kPIi52Xl8w2DCX-NkchdwUQY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "550313201032-m2vdhevopq0bjk1p2c1rgu8gp4hihgp1.apps.googleusercontent.com",
+              "client_id": "797748712625-mkv4a2lkvg2ljlv6cs6t7r823nmj90tr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
