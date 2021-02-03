@@ -37,7 +37,7 @@
     <string name="taken">Genomen</string>
     <string name="dosage">Dosering</string>
     <string name="medicine_taken">Medicijn Genomen</string>
-    <string name="record_dose">Dosering Opslaan</string>
+    <string name="record_dose">Ingenomen</string>
     <string name="username">Gebruikersnaam</string>
     <string name="quantity">Hoeveelheid</string>
     <string name="unit">Soort</string>
