@@ -17,7 +17,7 @@
 
 
         <activity android:name=".MedicineTakenActivity"
-            android:label="Track Medication"
+            android:label="Ingenomen medicijnen"
             android:parentActivityName=".HomeActivity"/>
 
         <activity
