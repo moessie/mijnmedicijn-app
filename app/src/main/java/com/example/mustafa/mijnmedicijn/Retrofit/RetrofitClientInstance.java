@@ -23,7 +23,7 @@ import retrofit2.http.Path;
 public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
-    private static final String BASE_URL = "https://92d9727432d5.ngrok.io/";
+    private static final String BASE_URL = "https://53093db7dd6a.ngrok.io/";
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
